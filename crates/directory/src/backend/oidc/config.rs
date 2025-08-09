@@ -69,6 +69,9 @@ impl OpenIdDirectory {
                 full_name_field: config
                     .value((&prefix, "fields.full-name"))
                     .map(|v| v.to_string()),
+                quota_field: config
+                    .value((&prefix, "fields.quota"))
+                    .map(|v| v.to_string()),
             },
             data_store,
         })

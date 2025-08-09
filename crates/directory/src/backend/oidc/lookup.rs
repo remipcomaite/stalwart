@@ -157,6 +157,7 @@ impl OpenIdDirectory {
 trait BuildPrincipal {
     fn build_principal(&mut self, config: &OpenIdConfig) -> trc::Result<Principal>;
     fn take_required_field(&mut self, field: &str) -> trc::Result<String>;
+    fn take_integer_field(&mut self, field: &str) -> Option<u64>;
     fn take_field(&mut self, field: &str) -> Option<String>;
 }
 
@@ -181,6 +182,11 @@ impl BuildPrincipal for OpenIdResponse {
             .as_ref()
             .and_then(|field| self.take_field(field));
 
+        let quota = config
+            .quota_field
+            .as_ref()
+            .and_then(|field| self.take_integer_field(field));
+
         Ok(Principal {
             id: u32::MAX,
             typ: Type::Individual,
@@ -188,7 +194,7 @@ impl BuildPrincipal for OpenIdResponse {
             description: full_name,
             secrets: Default::default(),
             emails: vec![email],
-            quota: Default::default(),
+            quota,
             tenant: Default::default(),
             data: vec![PrincipalData::Roles(vec![ROLE_USER])],
         })
@@ -206,6 +212,13 @@ impl BuildPrincipal for OpenIdResponse {
                     serde_json::to_string(&other.unwrap_or(serde_json::Value::Null))
                         .unwrap_or_default(),
                 )),
+        }
+    }
+
+    fn take_integer_field(&mut self, field: &str) -> Option<u64> {
+        match self.remove(field) {
+            Some(serde_json::Value::Number(num)) if num.as_u64().is_some() => num.as_u64(),
+            _ => None,
         }
     }
 

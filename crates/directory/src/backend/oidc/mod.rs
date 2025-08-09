@@ -23,6 +23,7 @@ struct OpenIdConfig {
     pub email_field: String,
     pub username_field: Option<String>,
     pub full_name_field: Option<String>,
+    pub quota_field: Option<String>,
 }
 
 #[derive(Debug)]
