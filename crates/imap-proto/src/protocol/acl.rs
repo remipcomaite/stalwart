@@ -206,6 +206,9 @@ impl Rights {
             Rights::DeleteMessages => b't',
             Rights::Expunge => b'e',
             Rights::Administer => b'a',
+            // RFC2086
+            Rights::RFC2086Create => b'c',
+            Rights::RFC2086Delete => b'd',
         }
     }
 }
@@ -224,6 +227,9 @@ impl Display for Rights {
             Rights::DeleteMessages => write!(f, "t"),
             Rights::Expunge => write!(f, "e"),
             Rights::Administer => write!(f, "a"),
+            // RFC2086
+            Rights::RFC2086Create => write!(f, "c"),
+            Rights::RFC2086Delete => write!(f, "d"),
         }
     }
 }

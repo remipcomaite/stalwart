@@ -70,6 +70,9 @@ impl<T: SessionStream> Session<T> {
                         Rights::DeleteMailbox,
                         Rights::Post,
                         Rights::Administer,
+                        // RFC 2086
+                        Rights::RFC2086Create,
+                        Rights::RFC2086Delete,
                     ],
                 ));
             }
@@ -125,6 +128,17 @@ impl<T: SessionStream> Session<T> {
                             }
                             _ => (),
                         }
+                    }
+
+                    // RFC2086
+                    if rights.contains(&Rights::CreateMailbox) && rights.contains(&Rights::DeleteMailbox) {
+                        rights.push(Rights::RFC2086Create);
+                    }
+
+                    if rights.contains(&Rights::DeleteMessages)
+                    && rights.contains(&Rights::Expunge)
+                    && rights.contains(&Rights::DeleteMailbox) {
+                        rights.push(Rights::RFC2086Delete);
                     }
 
                     permissions.push((account_name, rights));
@@ -200,6 +214,18 @@ impl<T: SessionStream> Session<T> {
                 if acl.contains(Acl::Submit) {
                     rights.push(Rights::Post);
                 }
+
+                // RFC2086
+                if rights.contains(&Rights::CreateMailbox) && rights.contains(&Rights::DeleteMailbox) {
+                    rights.push(Rights::RFC2086Create);
+                }
+
+                if rights.contains(&Rights::DeleteMessages)
+                && rights.contains(&Rights::Expunge)
+                && rights.contains(&Rights::DeleteMailbox) {
+                    rights.push(Rights::RFC2086Delete);
+                }
+            
                 rights
             } else {
                 vec![
@@ -214,6 +240,9 @@ impl<T: SessionStream> Session<T> {
                     Rights::DeleteMailbox,
                     Rights::Post,
                     Rights::Administer,
+                    // RFC 2086
+                    Rights::RFC2086Create,
+                    Rights::RFC2086Delete,
                 ]
             };
 
