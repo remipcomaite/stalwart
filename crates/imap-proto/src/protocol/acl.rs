@@ -54,6 +54,8 @@ pub enum Rights {
     DeleteMessages,
     Expunge,
     Administer,
+    RFC2086Create,
+    RFC2086Delete,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -248,6 +250,8 @@ impl From<Rights> for Acl {
             Rights::DeleteMessages => Acl::RemoveItems,
             Rights::Expunge => Acl::RemoveItems,
             Rights::Administer => Acl::Administer,
+            Rights::RFC2086Create => Acl::CreateChild,
+            Rights::RFC2086Delete => Acl::RemoveItems,
         }
     }
 }

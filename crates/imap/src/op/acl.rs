@@ -131,13 +131,13 @@ impl<T: SessionStream> Session<T> {
                     }
 
                     // RFC2086
-                    if rights.contains(&Rights::CreateMailbox) && rights.contains(&Rights::DeleteMailbox) {
+                    if rights.contains(&Rights::CreateMailbox) || rights.contains(&Rights::DeleteMailbox) {
                         rights.push(Rights::RFC2086Create);
                     }
 
                     if rights.contains(&Rights::DeleteMessages)
-                    && rights.contains(&Rights::Expunge)
-                    && rights.contains(&Rights::DeleteMailbox) {
+                    || rights.contains(&Rights::Expunge)
+                    || rights.contains(&Rights::DeleteMailbox) {
                         rights.push(Rights::RFC2086Delete);
                     }
 
@@ -216,13 +216,13 @@ impl<T: SessionStream> Session<T> {
                 }
 
                 // RFC2086
-                if rights.contains(&Rights::CreateMailbox) && rights.contains(&Rights::DeleteMailbox) {
+                if rights.contains(&Rights::CreateMailbox) || rights.contains(&Rights::DeleteMailbox) {
                     rights.push(Rights::RFC2086Create);
                 }
 
                 if rights.contains(&Rights::DeleteMessages)
-                && rights.contains(&Rights::Expunge)
-                && rights.contains(&Rights::DeleteMailbox) {
+                || rights.contains(&Rights::Expunge)
+                || rights.contains(&Rights::DeleteMailbox) {
                     rights.push(Rights::RFC2086Delete);
                 }
             
